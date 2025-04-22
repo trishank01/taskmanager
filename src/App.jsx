@@ -15,7 +15,7 @@ import ViewTaskDetails from "./pages/User/ViewTaskDetails";
 function App() {
   return (
     <>
-      <div className="text-3xl text-rose-500 ">
+      <div className="">
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
