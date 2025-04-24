@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import AuthLayout from "../../components/layout/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/Input";
+import { ValidateEmail } from "../../Utils/helper";
+import axiosInstance from "../../Utils/axiosInstance";
+import { API_PATH } from "../../Utils/apiPaths";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,10 +14,45 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+ 
+
   // Handle Login Form Submit
   const handleLogin = async (e) => {
-    e.prevantDefault();
+    e.preventDefault();
+    if (!ValidateEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (!password) {
+      setError("Please enter the password");
+      return;
+    }
+
+    if(password.length < 8){
+      setError("Minimum 8 characters required");
+      return;
+    }
+
+    let Passwordregax = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/
+    if(!Passwordregax.test(password)){
+      setError("Password must contain at least 1 lowercase, 1 uppercase, 1 number, and 1 special character.");
+      return;
+    }
+
+    setError("")
+
+    // Login API Call
+    try {
+      const response = await axiosInstance.post(API_PATH.AUTH.LOGIN , {
+        email,
+        password,
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
   };
+
 
   return (
     <AuthLayout>

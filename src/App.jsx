@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Auth/Login";
-import SingUp from "./pages/Auth/SingUp";
+import SingUp from "./pages/Auth/SignUp";
 import PrivateRoute from "./routes/PrivateRoute";
 import Dashboard from "./pages/Admin/Dashboard";
 import ManageTask from "./pages/Admin/ManageTask";
@@ -19,7 +19,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/singUp" element={<SingUp />} />
+            <Route path="/signup" element={<SingUp />} />
 
             {/* Admin Routes */}
             <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
