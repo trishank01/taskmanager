@@ -1,16 +1,19 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthLayout from "../../components/layout/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/inputs/Input";
 import { ValidateEmail } from "../../Utils/helper";
 import axiosInstance from "../../Utils/axiosInstance";
 import { API_PATH } from "../../Utils/apiPaths";
+import { UserContext } from "../../context/userContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const {updateUser} = useContext(UserContext)
 
   const navigate = useNavigate();
 
@@ -47,9 +50,26 @@ const Login = () => {
       const response = await axiosInstance.post(API_PATH.AUTH.LOGIN , {
         email,
         password,
-      })
+      });
+      const {token , role} = response.data
+
+      if(token){
+        localStorage.setItem("token" , token)
+        updateUser(response.data)
+
+          // Redirect based on role
+          if(role === "admin"){
+            navigate("/admin/dashboard")
+          }else{
+            navigate("/user/dashboard")
+          }
+      }
     } catch (error) {
-      console.log(error.message)
+       if(error.response && error.response.data.message){
+        setError(error.response.data.message)
+       }else{
+        setError("Something went wrong. Please try again")
+       }
     }
   };
 
@@ -92,6 +112,7 @@ const Login = () => {
         </form>
       </div>
     </AuthLayout>
+   
   );
 };
 

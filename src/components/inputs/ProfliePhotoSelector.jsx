@@ -5,14 +5,12 @@ const ProfliePhotoSelector = ({ image, setImage }) => {
   const inputRef = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
-  console.log(previewUrl)
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       // Update the image state
       setImage(file);
-
       // Generate preview URL from the file
       const preview = URL.createObjectURL(file);
       setPreviewUrl(preview);
