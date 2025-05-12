@@ -70,7 +70,6 @@ const Dashboard = () => {
     return () => {};
   }, []);
 
-  console.log(dashboardData);
   return (
     <DashboardLayout activeMenu="Dashboard">
       <div className="card my-5">
@@ -116,36 +115,29 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6">
-          <div>
-            <div className="card">
-                 <h5 className="font-medium">Task Distrubtion</h5>
-              <div className="flex items-center justify-between mt-2">
-                <CustomPieChart
-                  data={pieChartData}
-                  label="Total Balance"
-                  colors={COLORS}
-                />
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-4 md:my-6">
+          <div className="card">
+            <h5 className="font-medium">Task Distrubtion</h5>
+            <div className="flex items-center justify-between mt-2">
+              <CustomPieChart
+                data={pieChartData}
+                label="Total Balance"
+                colors={COLORS}
+              />
             </div>
           </div>
 
-
-             <div>
-            <div className="card">
-                 <h5 className="font-medium">Task Priority Levels</h5>
-              <div className="flex items-center justify-between mt-2">
-                <CustomBarChart
-                  data={barChartData}
-                  label="Total Balance"
-                  colors={COLORS}
-                />
-              </div>
+          <div className="card">
+            <h5 className="font-medium">Task Priority Levels</h5>
+            <div className="flex items-center justify-between mt-2">
+              <CustomBarChart
+                data={barChartData}
+                colors={COLORS}
+              />
+        
             </div>
           </div>
-
-
         </div>
         <div className="md:col-span-2">
           <div className="card">
