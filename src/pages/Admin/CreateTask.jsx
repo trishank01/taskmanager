@@ -9,6 +9,7 @@ import moment from "moment";
 import { LuTrash2 } from "react-icons/lu";
 import { useState } from "react";
 import SelectDropDown from "../../components/inputs/SelectDropDown";
+import SelectUsers from "../../components/inputs/SelectUsers";
 
 const CreateTask = () => {
   const location = useLocation();
@@ -138,10 +139,21 @@ const CreateTask = () => {
                   type="date"
                   />
                 </div>
+               
 
-                <div className="">
-                  <label ></label>
-                </div>
+               <div className="col-span-12 md:col-span-3">
+                <label className="text-sx font-medium text-slate-600">
+                  Assign To
+                </label>
+
+                <SelectUsers
+                selectedUsers={taskData.assignedTo}
+                setSelectedUsers={(value) => {
+                   handleValueChange("assingedTo" , value)
+                }}
+                />
+               </div>
+          
             </div>
           </div>
         </div>
