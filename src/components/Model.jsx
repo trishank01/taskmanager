@@ -31,7 +31,7 @@ const Model = ({ children, isOpen, onclose, title }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="m1 1 6 6m0 0 0 6 6M7 7l6-6M7 7l-6 6"
+                  d="M7 7l10 10M17 7l-10 10"
                 />
               </svg>
             </button>

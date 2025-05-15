@@ -10,6 +10,8 @@ import { LuTrash2 } from "react-icons/lu";
 import { useState } from "react";
 import SelectDropDown from "../../components/inputs/SelectDropDown";
 import SelectUsers from "../../components/inputs/SelectUsers";
+import TodoListInput from "../../components/inputs/TodoListInput";
+import AddAttachmentsInput from "../../components/inputs/AddAttachmentsInput";
 
 const CreateTask = () => {
   const location = useLocation();
@@ -114,46 +116,85 @@ const CreateTask = () => {
             </div>
 
             <div className="grid grid-cols-12 gap-4 mt-2">
-                <div className="col-span-6 md:col-span-4">
-                  <label className="text-xs font-medium text-slate-600">
-                    Priority
-                  </label>
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Priority
+                </label>
 
-                  <SelectDropDown
+                <SelectDropDown
                   options={PRIOPITY_DATA}
                   value={taskData.priority}
-                  onChange={(value) => handleValueChange("prioprity" , value)}
+                  onChange={(value) => handleValueChange("prioprity", value)}
                   placeholder="Select Priority"
-                  />
-                </div>
+                />
+              </div>
 
-                <div className="col-span-6 md:col-span-4">
-                  <label className="text-xs font-medium text-slate-600">
-                    Due Date
-                  </label>
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Due Date
+                </label>
 
-                  <input placeholder="Create App UI" 
+                <input
+                  placeholder="Create App UI"
                   className="form-input"
-                  value={taskData.dueDate}
-                  onChange={({target}) => handleValueChange("dueDate" , target.value)}
+                  value={taskData.dueDate || ""}
+                  onChange={({ target }) =>
+                    handleValueChange("dueDate", target.value)
+                  }
                   type="date"
-                  />
-                </div>
-               
+                />
+              </div>
 
-               <div className="col-span-12 md:col-span-3">
+              <div className="col-span-12 md:col-span-3">
                 <label className="text-sx font-medium text-slate-600">
                   Assign To
                 </label>
 
                 <SelectUsers
-                selectedUsers={taskData.assignedTo}
-                setSelectedUsers={(value) => {
-                   handleValueChange("assingedTo" , value)
-                }}
+                  selectedUsers={taskData.assignedTo}
+                  setSelectedUsers={(value) => {
+                    handleValueChange("assignedTo", value);
+                  }}
                 />
-               </div>
-          
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <label className="text-xs font-medium text-slate-600">
+                TODO Cheklist
+              </label>
+
+              <TodoListInput
+                todoList={taskData?.todoChecklist}
+                setTodoList={(value) => {
+                  handleValueChange("todoChecklist", value);
+                }}
+              />
+            </div>
+            <div className="mt-3">
+              <label className="text-xs font-medium text-slate-600">
+                Add Attachments
+              </label>
+
+              <AddAttachmentsInput
+                attachments={taskData?.attachments}
+                setAttachments={(value) =>
+                  handleValueChange("attachments", value)
+                }
+              />
+            </div>
+            {error && (
+              <p className="text-xs font-medium text-red-500 mt-5">{error}</p>
+            )}
+
+            <div className="flex justify-end mt-7">
+              <button
+                className="add-btn"
+                onClick={handleSumbit}
+                disabled={loading}
+              >
+                {taskId ? "UPDATE TASK" : "CREATE TASK"}
+              </button>
             </div>
           </div>
         </div>

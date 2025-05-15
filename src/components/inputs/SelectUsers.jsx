@@ -8,7 +8,7 @@ import AvatarGroup from "../layout/AvatarGroup";
 
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
   const [allUsers, setAllUsers] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempSelectedUsers, setTempSelectedUsers] = useState([]);
   const getAllUsers = async () => {
     try {
@@ -36,7 +36,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
 
   const selectedUserAvatars = allUsers
     .filter((user) => selectedUsers.includes(user._id))
-    .map((user) => user.profileImageUrl);
+    .map((user) => user.profileImageUrl || "/default.png" );
 
   useEffect(() => {
     getAllUsers();
@@ -46,9 +46,10 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     if (selectedUsers.length === 0) {
       setTempSelectedUsers([]);
     }
-
     return () => {};
   }, [selectedUsers]);
+
+
 
   return (
     <div className="space-y-4 mt-2">
@@ -57,7 +58,9 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
           <LuUsers className="text-sm" /> Add Members
         </button>
       )}
+    
 
+ 
       {selectedUserAvatars.length > 0 && (
         <div className="cursor-pointer" onClick={() => setIsModalOpen(true)}>
           <AvatarGroup avatars={selectedUserAvatars} maxVisible={3} />
@@ -76,7 +79,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
               className="flex items-center gap-4 p-3 border-b border-gray-200"
             >
               <img
-                src={user.profileImageUrl}
+                src={user?.profileImageUrl || null}
                 alt={user.name}
                 className="w-10 h-10 rounded-full"
               />
