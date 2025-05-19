@@ -53,12 +53,67 @@ const CreateTask = () => {
   };
 
   // Create Task
-  const createTask = async () => {};
+  const createTask = async () => {
+    setLoading(false)
+    try {
+      const todolist = taskData.todoChecklist?.map((item) => ({
+         text:item,
+         completed:false
+      }))
+
+      const response = await axiosInstance.post(API_PATH.TASKS.CREATE_TASK,{
+        ...taskData,
+        dueDate: new Date(taskData.dueDate).toISOString(),
+        todoChecklist:todolist
+      });
+
+      toast.success("Task Created Successfully")
+
+      clearData()
+    } catch (error) {
+      console.error("Error Creating task", error)
+    } finally{
+      setLoading(false)
+    }
+  };
 
   // Update Task
   const updateTask = async () => {};
 
-  const handleSumbit = async () => {};
+  const handleSumbit = async () => {
+    setError(null);
+
+    if (!taskData.title.trim()) {
+      setError("Title is required.");
+      return;
+    }
+
+    if (!taskData.description.trim()) {
+      setError("Description is required.");
+      return;
+    }
+
+    if (!taskData.dueDate) {
+      setError("Due date is required");
+      return;
+    }
+
+    if (taskData.assignedTo?.length === 0) {
+      setError("Task not assigned to any member");
+      return;
+    }
+
+    if (taskData.todoChecklist?.length === 0) {
+      setError("Add atleast one todo task ");
+      return;
+    }
+
+    if (taskId) {
+      updateTask();
+      return;
+    }
+    createTask();
+  };
 
   //get Task info by ID
   const getTaskDetailsByID = async () => {};
@@ -110,7 +165,7 @@ const CreateTask = () => {
                 rows={4}
                 value={taskData.description}
                 onChange={({ target }) => {
-                  handleValueChange("description"), target.value;
+                  handleValueChange("description", target.value);
                 }}
               />
             </div>
@@ -124,7 +179,7 @@ const CreateTask = () => {
                 <SelectDropDown
                   options={PRIOPITY_DATA}
                   value={taskData.priority}
-                  onChange={(value) => handleValueChange("prioprity", value)}
+                  onChange={(value) => handleValueChange("priority", value)}
                   placeholder="Select Priority"
                 />
               </div>
