@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { LuTrash2 } from "react-icons/lu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectDropDown from "../../components/inputs/SelectDropDown";
 import SelectUsers from "../../components/inputs/SelectUsers";
 import TodoListInput from "../../components/inputs/TodoListInput";
@@ -38,7 +38,7 @@ const CreateTask = () => {
   const handleValueChange = (key, value) => {
     setTaskData((prev) => ({ ...prev, [key]: value }));
   };
-
+ 
   const clearData = () => {
     //reset form
     setTaskData({
@@ -54,26 +54,26 @@ const CreateTask = () => {
 
   // Create Task
   const createTask = async () => {
-    setLoading(false)
+    setLoading(false);
     try {
       const todolist = taskData.todoChecklist?.map((item) => ({
-         text:item,
-         completed:false
-      }))
+        text: item,
+        completed: false,
+      }));
 
-      const response = await axiosInstance.post(API_PATH.TASKS.CREATE_TASK,{
+      const response = await axiosInstance.post(API_PATH.TASKS.CREATE_TASK, {
         ...taskData,
         dueDate: new Date(taskData.dueDate).toISOString(),
-        todoChecklist:todolist
+        todoChecklist: todolist,
       });
 
-      toast.success("Task Created Successfully")
+      toast.success("Task Created Successfully");
 
-      clearData()
+      clearData();
     } catch (error) {
-      console.error("Error Creating task", error)
-    } finally{
-      setLoading(false)
+      console.error("Error Creating task", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -116,10 +116,43 @@ const CreateTask = () => {
   };
 
   //get Task info by ID
-  const getTaskDetailsByID = async () => {};
+  const getTaskDetailsByID = async () => {
+    try {
+      const response = await axiosInstance.get(
+        API_PATH.TASKS.GET_TASK_BY_ID(taskId)
+      );
+      if (response.data) {
+        const taskInfo = response.data;
+        setCurrentTask(taskInfo);
+         console.log(taskInfo)
+        setTaskData((prevState) => ({
+          title: taskInfo.title,
+          description: taskInfo.description,
+          priority: taskInfo.priority,
+          dueDate: taskInfo.dueDate
+            ? moment(taskInfo.dueDate).format("YYYY-MM-DD")
+            : null,
+          assignedTo: taskInfo?.assignedTo?.map((item) => item?._id) || [],
+          todoChecklist:
+            taskInfo?.todoChecklist?.map((item) => item?.text) || [],
+          attachments: taskInfo?.attachments || [],
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching data", error.message);
+    }
+  };
 
   // Delete Task
   const deleteTask = async () => {};
+
+  useEffect(() => {
+    if (taskId) {
+      getTaskDetailsByID(taskId);
+    }
+
+    return () => {};
+  }, [taskId]);
 
   return (
     <DashboardLayout activeMenu="Creat Task">
