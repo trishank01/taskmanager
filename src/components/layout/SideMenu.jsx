@@ -7,6 +7,8 @@ const SideMenu = ({ activeMenu }) => {
   const { user, clearUser } = useContext(UserContext);
   const [sideMenuData, setSideMenuData] = useState([]);
 
+  
+
   const navigate = useNavigate();
 
   const handleClick = (route) => {

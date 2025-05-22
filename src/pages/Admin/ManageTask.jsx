@@ -7,6 +7,7 @@ import { API_PATH } from "../../Utils/apiPaths";
 import { LuFileSpreadsheet } from "react-icons/lu";
 import TaskStatusTabs from "../../components/TaskStatusTabs";
 import TaskCard from "../../components/Cards/TaskCard";
+import toast from "react-hot-toast";
 
 const ManageTask = () => {
   const [allTasks, setAllTasks] = useState([]);
@@ -14,15 +15,6 @@ const ManageTask = () => {
   const [filterStatus, setFilterStatus] = useState("All");
 
   const navigate = useNavigate();
-
- async function check() {
-     const response = await axiosInstance.get(API_PATH.TASKS.GET_ALL_TASKS)
-    console.log(response)
-  }
-
-  useEffect(() => {
-    check() 
-  },[])
 
   const getAllTasks = async () => {
     try {
@@ -54,13 +46,33 @@ const ManageTask = () => {
   };
 
   // download task report
-  const handleDownloadReport = async () => {};
+  const handleDownloadReport = async () => {
+      try {
+      const response = await axiosInstance.get(API_PATH.REPORTS.EXPORT_TASKS, {
+        responseType: "blob",
+      });
+
+      // Create a URL for the blob
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "user_details.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading expese details:", error);
+      toast.error("Failed to download expense details. Please try again");
+    }
+  };
 
   useEffect(() => {
     getAllTasks(filterStatus);
     return () => {};
   }, [filterStatus]);
- console.log(allTasks)
+
   return (
     <DashboardLayout activeMenu="Manage Tasks">
       <div className="my-5">

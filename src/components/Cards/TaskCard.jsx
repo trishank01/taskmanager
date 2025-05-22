@@ -41,7 +41,7 @@ const TaskCard = ({
         return "text-rose-500 bg-rose-50 border border-rose-500/10";
     }
   };
- console.log("assignedTo" , assignedTo)
+
   return (
     <div
       className="bg-white rounded-xl py-4 shadow-md shadow-gray-100 border border-200/50 cursor-pointer"

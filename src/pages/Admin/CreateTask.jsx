@@ -12,6 +12,9 @@ import SelectDropDown from "../../components/inputs/SelectDropDown";
 import SelectUsers from "../../components/inputs/SelectUsers";
 import TodoListInput from "../../components/inputs/TodoListInput";
 import AddAttachmentsInput from "../../components/inputs/AddAttachmentsInput";
+import DeleteAlert from "../../components/DeleteAlert";
+import Model from "../../components/Model";
+
 
 const CreateTask = () => {
   const location = useLocation();
@@ -38,7 +41,7 @@ const CreateTask = () => {
   const handleValueChange = (key, value) => {
     setTaskData((prev) => ({ ...prev, [key]: value }));
   };
- 
+
   const clearData = () => {
     //reset form
     setTaskData({
@@ -78,7 +81,36 @@ const CreateTask = () => {
   };
 
   // Update Task
-  const updateTask = async () => {};
+  const updateTask = async () => {
+    setLoading(true);
+
+    try {
+      const todolist = taskData.todoChecklist.map((item) => {
+        const prevTodoChecklist = currentTask?.todoChecklist || [];
+        const matchedTask = prevTodoChecklist.find((task) => task.text == item);
+        return {
+          text: item,
+          completed: matchedTask ? matchedTask.completed : false,
+        };
+      });
+
+      const response = await axiosInstance.put(
+        API_PATH.TASKS.UPDATE_TASK(taskId),
+        {
+          ...taskData,
+          dueDate: new Date(taskData.dueDate).toISOString(),
+          todoChecklist: todolist,
+        }
+      );
+
+      toast.success("Task Updated Successfully");
+    } catch (error) {
+      console.error("Error creating task", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSumbit = async () => {
     setError(null);
@@ -124,7 +156,6 @@ const CreateTask = () => {
       if (response.data) {
         const taskInfo = response.data;
         setCurrentTask(taskInfo);
-         console.log(taskInfo)
         setTaskData((prevState) => ({
           title: taskInfo.title,
           description: taskInfo.description,
@@ -144,7 +175,19 @@ const CreateTask = () => {
   };
 
   // Delete Task
-  const deleteTask = async () => {};
+  const deleteTask = async () => {
+    try {
+      await axiosInstance.delete(API_PATH.TASKS.DELETE_TASK(taskId));
+      setOpenDeleteAlert(false);
+      toast.success("Exense details deleted successfully");
+      navigate("/admin/tasks");
+    } catch (error) {
+      console.error(
+        "Error deleting",
+        error.response?.data?.message || error.message
+      );
+    }
+  };
 
   useEffect(() => {
     if (taskId) {
@@ -287,6 +330,17 @@ const CreateTask = () => {
           </div>
         </div>
       </div>
+
+      <Model
+      isOpen={openDeleteAlert}
+      onClose={() => setOpenDeleteAlert(false)}
+      title="Delete Task"
+     >
+      <DeleteAlert
+      content="Are you sure you want to delete this task"
+      onDelete={() => deleteTask()}
+      />
+      </Model>
     </DashboardLayout>
   );
 };
