@@ -41,6 +41,7 @@ const ViewTaskDetails = () => {
 
   // handle todo check
   const updateTodoCheckList = async (index) => {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     const todoChecklist = [...task?.todoChecklist];
     const taskId = id;
 

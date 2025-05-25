@@ -8,7 +8,6 @@ import axiosInstance from "../../Utils/axiosInstance";
 import { API_PATH } from "../../Utils/apiPaths";
 import moment from "moment";
 import InfoCard from "../../components/Cards/InfoCard";
-import { IoMdCard } from "react-icons/io";
 import { addThousandsSeparator } from "../../Utils/helper";
 import { LuArrowRight } from "react-icons/lu";
 import TaskListTable from "../../components/TaskListTable";
@@ -25,6 +24,8 @@ const UserDashboard = () => {
   const [pieChartData, setPieChartData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
 
+  console.log(dashboardData)
+
   const navigate = useNavigate();
 
   //Prepare chart Data
@@ -40,7 +41,7 @@ const UserDashboard = () => {
     setPieChartData(taskDistributionData);
 
     const PriorityLevelData = [
-      { priority: "Low", count: taskPriorityLevels.low || 0 },
+      { priority: "Low", count: taskPriorityLevels.Low || 0 },
       { priority: "Medium", count: taskPriorityLevels?.Medium || 0 },
       { priority: "High", count: taskPriorityLevels?.High || 0 },
     ];
@@ -93,7 +94,7 @@ const UserDashboard = () => {
           <InfoCard
             label="Pending Tasks"
             value={addThousandsSeparator(
-              dashboardData?.charts?.taskDistribution?.pending || 0
+              dashboardData?.charts?.taskDistribution?.Pending || 0
             )}
             color="bg-violet-500"
           />
@@ -101,13 +102,13 @@ const UserDashboard = () => {
           <InfoCard
             label="In Progress Tasks"
             value={addThousandsSeparator(
-              dashboardData?.charts?.taskDistribution?.Inprogress || 0
+              dashboardData?.charts?.taskDistribution?.InProgress || 0
             )}
             color="bg-cyan-500"
           />
 
           <InfoCard
-            label="Pending Tasks"
+            label="Completed Tasks"
             value={addThousandsSeparator(
               dashboardData?.charts?.taskDistribution?.Completed || 0
             )}

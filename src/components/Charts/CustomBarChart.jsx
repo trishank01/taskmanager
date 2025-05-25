@@ -9,15 +9,15 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-const CustomBarChart = ({ data }) => {
+const CustomBarChart = ({data}) => {
   // function to alternate colors
-  // const sampleData = [
+  // const data = [
   //   { priority: "Low", count: 4 },
   //   { priority: "Medium", count: 6 },
   //   { priority: "High", count: 3 },
   // ];
 
-  console.log(data);
+  
   const getBarColor = (entry) => {
     switch (entry?.priority) {
       case "Low":

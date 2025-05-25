@@ -27,12 +27,12 @@ const ManageTask = () => {
 
       // map statusSummary data with fixed labels and order
       const statusSummary = response.data?.statusSummary || {};
-
+    
       const StatusArray = [
         { label: "All", count: statusSummary.all || 0 },
         { label: "Pending", count: statusSummary.pendingTasks || 0 },
-        { label: "In Progress", count: statusSummary.InProgress || 0 },
-        { label: "Completed", count: statusSummary.completed || 0 },
+        { label: "In Progress", count: statusSummary.inProgressTask || 0 },
+        { label: "Completed", count: statusSummary.completedTasks || 0 },
       ];
 
       setTabs(StatusArray);
@@ -47,7 +47,7 @@ const ManageTask = () => {
 
   // download task report
   const handleDownloadReport = async () => {
-      try {
+    try {
       const response = await axiosInstance.get(API_PATH.REPORTS.EXPORT_TASKS, {
         responseType: "blob",
       });
@@ -73,12 +73,15 @@ const ManageTask = () => {
     return () => {};
   }, [filterStatus]);
 
+ 
+
   return (
     <DashboardLayout activeMenu="Manage Tasks">
       <div className="my-5">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-xl md:text-xl font-medium">My Task</h2>
+
             <button
               className="flex lg:hidden download-btn"
               onClick={handleDownloadReport}
@@ -106,10 +109,13 @@ const ManageTask = () => {
             </div>
           )}
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          {allTasks?.map((item) => {
-            return (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 w-full">
+          {allTasks.length === 0 ? (
+            <h3 className="col-span-full h-[400px] flex justify-center items-center">
+              No task assigned to any employee
+            </h3>
+          ) : (
+            allTasks.map((item) => (
               <TaskCard
                 key={item._id}
                 title={item.title}
@@ -123,14 +129,14 @@ const ManageTask = () => {
                   (item) => item.profileImageUrl
                 )}
                 attachmentCount={item.attachments?.length || 0}
-                completedTodoCount={item.completedTodoCount || 0}
+                completedTodoCount={item.completedCount || 0}
                 todoChecklist={item.todoChecklist || []}
                 onClick={() => {
                   handleClick(item);
                 }}
               />
-            );
-          })}
+            ))
+          )}
         </div>
       </div>
     </DashboardLayout>

@@ -30,8 +30,8 @@ const MyTask = () => {
       const StatusArray = [
         { label: "All", count: statusSummary.all || 0 },
         { label: "Pending", count: statusSummary.pendingTasks || 0 },
-        { label: "In Progress", count: statusSummary.InProgress || 0 },
-        { label: "Completed", count: statusSummary.completed || 0 },
+        { label: "In Progress", count: statusSummary.inProgressTask || 0 },
+        { label: "Completed", count: statusSummary.completedTasks || 0 },
       ];
 
       setTabs(StatusArray);
@@ -82,7 +82,7 @@ const MyTask = () => {
                   (item) => item.profileImageUrl
                 )}
                 attachmentCount={item.attachments?.length || 0}
-                completedTodoCount={item.completedTodoCount || 0}
+                completedTodoCount={item.completedCount || 0}
                 todoChecklist={item.todoChecklist || []}
                 onClick={() => {
                   handleClick(item._id);
