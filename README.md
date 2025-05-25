@@ -34,17 +34,7 @@ A modern and responsive task management dashboard designed for both individual p
 
 ## 📁 Folder Structure
 
-src/
-├── assets/ # Static files like images/icons
-├── components/ # UI components like Cards, Charts, Inputs
-│ ├── layout/ # Layout-specific components (AvatarGroup, Progress, etc.)
-├── context/ # Context for global state (user context)
-├── hooks/ # Custom hooks (e.g., authentication)
-├── pages/ # Route-based views
-│ ├── Admin/ # Admin views (task, user, and dashboard management)
-│ ├── Auth/ # Auth views (Login, Signup)
-│ └── User/ # User views (My Tasks, User Dashboard)
-└── App.jsx # Main app entry point
+<pre lang="bash"> src/ ├── assets/ # Static files like images/icons ├── components/ # Reusable UI components │ ├── Cards/ # Task/stat cards │ ├── Charts/ # Chart components for insights │ ├── inputs/ # Input fields and form components │ └── layout/ # Layout-specific components like modals, alerts │ ├── AvatarGroup.jsx │ ├── DeleteAlert.jsx │ ├── Model.jsx │ ├── Progress.jsx │ ├── TaskListTable.jsx │ └── TaskStatusTabs.jsx ├── context/ # Global state (e.g., user context) │ └── userContext.jsx ├── hooks/ # Custom hooks │ └── useUserAuth.jsx ├── pages/ # Route-based views │ ├── Admin/ │ │ ├── CreateTask.jsx │ │ ├── Dashboard.jsx │ │ ├── ManageTask.jsx │ │ └── ManageUsers.jsx │ ├── Auth/ │ │ ├── Login.jsx │ │ └── SignUp.jsx │ └── User/ │ ├── MyTask.jsx │ └── UserDashboard.jsx └── App.jsx # Main app entry </pre>
 
 
 ## 📦 Getting Started
