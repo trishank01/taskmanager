@@ -1,3 +1,7 @@
+## 🚀 Live Demo
+
+👉 [Click here to view the live app](https://taskmanager-frontend-three.vercel.app/)
+
 # 📋 Task Management Dashboard – Frontend
 
 A modern and responsive task management dashboard designed for both individual productivity and team collaboration. This is the **frontend** built with modern React tooling and structured for scalability.
