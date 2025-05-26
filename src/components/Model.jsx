@@ -1,10 +1,20 @@
 import React from "react";
 
 const Model = ({ children, isOpen, onclose, title }) => {
-  if (!isOpen) return;
+  if (!isOpen) return null;
+
+  const handleBackdropClick = (e) => {
+    // Close only if user clicks directly on the backdrop (not modal content)
+    if (e.target === e.currentTarget) {
+      onclose();
+    }
+  };
 
   return (
-    <div className="fixed top-0 right-0 left-0 z-5 flex justify-center items-center w-full h-[calc(100%-1rem)] max-h-full overflow-y-auto overflow-x-hidden bg-black/20 bg-opacity-50">
+    <div
+      onClick={handleBackdropClick}
+      className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full overflow-y-auto bg-black/20"
+    >
       <div className="relative p-4 w-full max-w-2xl max-h-full">
         {/* Modal content */}
         <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
@@ -31,12 +41,13 @@ const Model = ({ children, isOpen, onclose, title }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M7 7l10 10M17 7l-10 10"
+                  d="M3 3l8 8M11 3l-8 8"
                 />
               </svg>
             </button>
           </div>
-          {/* modal body */}
+
+          {/* Modal Body */}
           <div className="p-4 md:p-5 space-y-4">{children}</div>
         </div>
       </div>
