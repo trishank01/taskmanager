@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
 import axiosInstance from "../../Utils/axiosInstance";
 import { API_PATH } from "../../Utils/apiPaths";
-import uploadImage from "../../Utils/uploadImage";
+//import uploadImage from "../../Utils/uploadImage";
 
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null);
@@ -16,20 +16,20 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [adminInviteToken, setAdminInviteToken] = useState("");
-  console.log("ProfilePicTop:", profilePic);
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
   const [error, setError] = useState(null);
 
-
-  const {updateUser} = useContext(UserContext)
+  const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
-
+ 
   // Handle SignUp form Submit
   const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log("ProfilePic in SignUp:", profilePic); // Ensure this logs the correct profilePic object
-    
-    let profileImageUrl = ''
+    // console.log("ProfilePic in SignUp:", profilePic); // Ensure this logs the correct profilePic object
+
+    let profileImageUrl = "";
 
     if (!fullName) {
       setError("Please enter full Name");
@@ -62,44 +62,54 @@ const SignUp = () => {
     setError("");
 
     // SingUp API Call
-    console.log("ProfilePicInSignUp", profilePic);
-  
+    // console.log("ProfilePicInSignUp", profilePic);
+
     try {
-      // Upload Image if present
-      if(profilePic){
-        const imgUploadRes = await uploadImage(profilePic);
-        profileImageUrl = imgUploadRes.imageUrl || 'no image'
+
+      if (profilePic) {
+        const formData = new FormData();
+        formData.append("file", profilePic);
+        formData.append("upload_preset", UPLOAD_PRESET);
+
+        const cloudinaryRes = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        const cloudinaryData = await cloudinaryRes.json();
+        profileImageUrl = cloudinaryData.secure_url || "no image";
       }
-     
-      const response = await axiosInstance.post(API_PATH.AUTH.REGISTER , {
+
+      const response = await axiosInstance.post(API_PATH.AUTH.REGISTER, {
         name: fullName,
         email,
         password,
         profileImageUrl,
         adminInviteToken,
       });
-      const {token , role} = response.data
+      const { token, role } = response.data;
 
-      if(token){
-        localStorage.setItem("token" , token)
-        updateUser(response.data)
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(response.data);
 
-          // Redirect based on role
-          if(role === "admin"){
-            navigate("/admin/dashboard")
-          }else{
-            navigate("/user/dashboard")
-          }
+        // Redirect based on role
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
       }
     } catch (error) {
-       if(error.response && error.response.data.message){
-        setError(error.response.data.message)
-       }else{
-        setError("Something went wrong. Please try again")
-       }
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again");
+      }
     }
-
-
   };
 
   return (
@@ -152,7 +162,7 @@ const SignUp = () => {
           </button>
 
           <p className="text-[13px] text-slate-800">
-           Already have account {" "}
+            Already have account{" "}
             <Link className="font-medium text-primary underline" to="/login">
               Login here
             </Link>

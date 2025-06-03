@@ -107,7 +107,7 @@ const Login = () => {
               <h2 class="text-xl font-semibold text-gray-800">User Credential</h2>
               <p class="text-gray-600 mt-2">Regular user access only</p>
               <p class="text-gray-600 mt-2">
-                <span class="font-medium">Email:</span> satya1@gmail.com
+                <span class="font-medium">Email:</span> satya@gmail.com
               </p>
               <p class="text-gray-600">
                 <span class="font-medium">Password:</span> Test@123

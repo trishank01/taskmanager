@@ -117,7 +117,7 @@ const UserDashboard = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6 ">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-4 md:my-6">
+     
           <div className="card">
             <h5 className="font-medium">Task Distrubtion</h5>
             <div className="flex items-center justify-between mt-2">
@@ -139,7 +139,7 @@ const UserDashboard = () => {
         
             </div>
           </div>
-        </div>
+    
         <div className="md:col-span-2">
           <div className="card">
             <h5 className="text-lg">Recent Tasks</h5>

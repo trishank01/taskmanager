@@ -117,9 +117,9 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6 ">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-4 md:my-6">
-          <div className="card">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6">
+      
+          <div className="w-full card">
             <h5 className="font-medium">Task Distrubtion</h5>
             <div className="flex items-center justify-between mt-2">
               <CustomPieChart
@@ -128,9 +128,10 @@ const Dashboard = () => {
                 colors={COLORS}
               />
             </div>
+            
           </div>
 
-          <div className="card">
+          <div className="w-full card">
             <h5 className="font-medium">Task Priority Levels</h5>
             <div className="flex items-center justify-between mt-2">
               <CustomBarChart
@@ -140,7 +141,8 @@ const Dashboard = () => {
         
             </div>
           </div>
-        </div>
+          
+    
         <div className="md:col-span-2">
           <div className="card">
             <h5 className="text-lg">Recent Tasks</h5>
